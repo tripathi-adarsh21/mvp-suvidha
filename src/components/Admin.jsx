@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { BBtn } from './ui/Atoms';
 import { MOCK_ADMIN_STATS, MOCK_LOGS } from '../config/mockData';

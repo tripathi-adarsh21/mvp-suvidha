@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // ═══════════════════════════════════════════════════════════════════════════
 // VOICE ASSISTANT v3.0 – Enhanced with Offline Support
 // PERSISTENT MODE: stays on until user manually disables

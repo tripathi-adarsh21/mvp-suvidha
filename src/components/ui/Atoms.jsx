@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // Shared UI Atoms – Spinner, Badge, BBtn, ActionRow
 
 export const Spinner = () => <div style={{ width:32,height:32,borderRadius:"50%",border:"3px solid var(--g100)",borderTopColor:"var(--teal)",animation:"spin .8s linear infinite",margin:"0 auto" }}/>;

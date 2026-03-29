@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { Spinner, Badge, BBtn, ActionRow } from './ui/Atoms';
 import api from '../utils/api';

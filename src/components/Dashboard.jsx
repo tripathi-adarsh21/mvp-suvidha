@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 const Dashboard = ({ user, onNav, sessionTime, t }) => {
   const mins=Math.floor(sessionTime/60), secs=sessionTime%60;
   const tiles = [

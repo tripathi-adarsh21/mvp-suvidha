@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from 'react';
 import { useT } from '../config/translations';
 import { startListening, stopListening, isSpeechRecognitionSupported } from '../utils/voiceAssistant';

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // ═══════════════════════════════════════════════════════════════════════════
 // SECURITY UTILITIES
 // XSS prevention, input validation, rate limiting

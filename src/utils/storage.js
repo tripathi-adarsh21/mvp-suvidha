@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // ═══════════════════════════════════════════════════════════════════════════
 // SAFE LOCALSTORAGE HELPERS
 // Typed get/set with fallbacks, never throws

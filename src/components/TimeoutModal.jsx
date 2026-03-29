@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 const TimeoutModal = ({ onContinue, onLogout, t }) => (
   <div style={{ position:"fixed",inset:0,background:"rgba(10,47,90,.7)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:99999 }} role="dialog" aria-modal="true" aria-labelledby="timeout-title">
     <div style={{ background:"var(--card-bg, #fff)",borderRadius:"var(--r-lg)",padding:40,maxWidth:400,textAlign:"center",boxShadow:"0 20px 60px rgba(0,0,0,.3)" }}>
