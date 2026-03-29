@@ -1,38 +1,269 @@
-.App {
-  text-align: center;
+/* ═══════════════════════════════════════════════════════════════════════════
+   SUVIDHA KIOSK v3.0 – Global Styles
+   Enhanced Dark Mode with glassmorphism
+   Smooth transitions & micro-animations
+   Adjustable font scale via --font-scale CSS variable
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+/* ─── Light Theme (default) ──────────────────────────────────────────────── */
+:root {
+  --navy: #0A2F5A;
+  --navy-dk: #071E3D;
+  --teal: #00897B;
+  --teal-lt: #E0F2F1;
+  --bg: #F7F9FC;
+  --g50: #F3F6F9;
+  --g100: #E8EDF4;
+  --g200: #C8D3E4;
+  --g400: #7A8CA8;
+  --g600: #4A5C74;
+  --red: #C62828;
+  --red-lt: #FFEBEE;
+  --amber: #E65100;
+  --green: #1B5E20;
+  --green-lt: #E8F5E9;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --sh-sm: 0 2px 8px rgba(10,47,90,.08);
+  --sh-md: 0 4px 20px rgba(10,47,90,.12);
+  --sh-lg: 0 8px 40px rgba(10,47,90,.18);
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --font-scale: 100%;
+  --glass-bg: rgba(255,255,255,0.7);
+  --glass-border: rgba(255,255,255,0.3);
+  --transition-speed: 0.3s;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ─── Dark Theme – Enhanced with Glassmorphism ───────────────────────────── */
+[data-theme="dark"] {
+  --navy: #C5D5EA;
+  --navy-dk: #0A1628;
+  --teal: #4DB6AC;
+  --teal-lt: #1A2F2D;
+  --bg: #0B1120;
+  --g50: #121D2E;
+  --g100: #182638;
+  --g200: #243448;
+  --g400: #7B8FA6;
+  --g600: #B0BEC5;
+  --red: #EF5350;
+  --red-lt: #2D1A1A;
+  --amber: #FFB74D;
+  --green: #66BB6A;
+  --green-lt: #1A2D1A;
+  --card-bg: #131E30;
+  --input-bg: #182638;
+  --sh-sm: 0 2px 8px rgba(0,0,0,.35);
+  --sh-md: 0 4px 20px rgba(0,0,0,.45);
+  --sh-lg: 0 8px 40px rgba(0,0,0,.55);
+  --glass-bg: rgba(18,29,46,0.85);
+  --glass-border: rgba(255,255,255,0.06);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+[data-theme="dark"] body {
+  background: var(--bg);
+  color: var(--navy);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+[data-theme="dark"] header {
+  background: var(--navy-dk) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+[data-theme="dark"] footer {
+  background: #070D16 !important;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Dark mode card enhancements */
+[data-theme="dark"] .fi > div {
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Dark mode input styling */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  color: var(--navy) !important;
+  border-color: var(--g200) !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--g400) !important;
+}
+
+/* Dark mode button hover */
+[data-theme="dark"] button:hover {
+  filter: brightness(1.08);
+}
+
+/* Dark mode scrollbar */
+[data-theme="dark"]::-webkit-scrollbar-track {
+  background: var(--navy-dk);
+}
+[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background: var(--g200);
+}
+
+/* ─── Base Styles ────────────────────────────────────────────────────────── */
+html {
+  font-size: var(--font-scale, 100%);
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: 'DM Sans', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--navy);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--transition-speed) ease, 
+              color var(--transition-speed) ease;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  outline: none;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+input, select, textarea {
+  font-family: inherit;
+  color: var(--navy);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--teal) !important;
+  box-shadow: 0 0 0 3px rgba(0,137,123,0.12);
+}
+
+/* Legacy high-contrast class (kept for backward compat) */
+body.hc { filter: contrast(1.35); }
+
+/* Touch targets */
+.btn { min-height: 52px; min-width: 52px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--g50); }
+::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--g400); }
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .6; transform: scale(1.05); }
+}
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-6px); opacity: 1; }
+}
+@keyframes chatSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(0,137,123,0.2); }
+  50% { box-shadow: 0 0 20px rgba(0,137,123,0.4); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes voiceWave {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
+}
+
+.fi { animation: fadeIn .28s ease forwards; }
+
+/* ─── Voice Assistant Indicator ──────────────────────────────────────────── */
+.voice-active-indicator {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(198,40,40,0.95);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 600;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 8px;
+  z-index: 9998;
+  animation: fadeIn 0.3s ease;
+  box-shadow: 0 4px 20px rgba(198,40,40,0.3);
 }
 
-.App-link {
-  color: #61dafb;
+/* ─── Focus Styles (Accessibility) ──────────────────────────────────────── */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 2px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* ─── Skip to main content (screen reader) ──────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--navy);
+  color: #fff;
+  padding: 8px 16px;
+  z-index: 100000;
+  font-size: 14px;
+  font-weight: 600;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .fi > div {
+    padding: 16px !important;
   }
-  to {
-    transform: rotate(360deg);
-  }
+}
+
+/* ─── Selection colors ───────────────────────────────────────────────────── */
+::selection {
+  background: var(--teal);
+  color: #fff;
+}
+
+/* ─── Print styles ───────────────────────────────────────────────────────── */
+@media print {
+  header, footer, .skip-link, button { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
 }
