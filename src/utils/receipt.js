@@ -7,32 +7,32 @@ import { jsPDF } from "jspdf";
 export const downloadReceipt = (data) => {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
-  
+
   // ─── Header ───
   doc.setFillColor(10, 47, 90); // Navy
   doc.rect(0, 0, pageWidth, 40, 'F');
-  
+
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(22);
   doc.text("SUVIDHA KIOSK", 20, 20);
-  
+
   doc.setFontSize(10);
   doc.text("SMART CITY PLATFORM · GOVT OF INDIA INITIATIVE", 20, 30);
-  
+
   // ─── Receipt Title ───
   doc.setTextColor(33, 33, 33);
   doc.setFontSize(18);
   doc.text(data.title || "OFFICIAL RECEIPT", 20, 60);
-  
+
   // ─── Divider ───
   doc.setDrawColor(200, 200, 200);
   doc.line(20, 65, pageWidth - 20, 65);
-  
+
   // ─── Details ───
   doc.setFontSize(12);
   let y = 80;
   const lineH = 10;
-  
+
   const addField = (label, value) => {
     if (!value) return;
     doc.setFont("helvetica", "bold");
@@ -47,13 +47,13 @@ export const downloadReceipt = (data) => {
   addField("Citizen Name", data.citizenName);
   addField("Department", data.department);
   addField("Service", data.service);
-  
+
   if (data.details) {
     Object.entries(data.details).forEach(([k, v]) => {
       addField(k, v);
     });
   }
-  
+
   // ─── Amount ───
   y += 10;
   doc.setFillColor(245, 245, 245);
@@ -62,7 +62,7 @@ export const downloadReceipt = (data) => {
   doc.setFontSize(14);
   doc.text("TOTAL AMOUNT PAID:", 30, y + 13);
   doc.text(data.amount || "₹0.00", pageWidth - 30, y + 13, { align: "right" });
-  
+
   // ─── Footer ───
   y = doc.internal.pageSize.getHeight() - 30;
   doc.setFontSize(9);

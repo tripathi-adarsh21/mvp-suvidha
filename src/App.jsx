@@ -129,7 +129,7 @@ export default function App() {
       window.removeEventListener("chat-activity", resetSess);
     };
   }, [resetSess]);
-
+// 3rd change
   // ─── Auth ───────────────────────────────────────────────────────────
   const doLogout = useCallback(() => {
     removeStorage("jwt");
