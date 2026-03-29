@@ -12,7 +12,7 @@ import { useT } from "./config/translations";
 
 // Utils
 import { removeStorage, setStorage, getStorage } from "./utils/storage";
-import { parseVoiceCommand, startListening, stopListening, isSpeechRecognitionSupported, speak } from "./utils/voiceAssistant";
+import { parseVoiceCommand, startListening, stopListening, isSpeechRecognitionSupported, speak, isListening } from "./utils/voiceAssistant";
 
 // Components
 import AccessibilityControls from "./components/ui/AccessibilityControls";
@@ -35,59 +35,63 @@ const useVoiceNav = (lang, nav, doLogout, user) => {
   const [voiceNavActive, setVoiceNavActive] = useState(false);
   const [voiceLevel, setVoiceLevel] = useState(0);
 
-  const toggleVoiceNav = useCallback(() => {
+  const startVoice = useCallback(() => {
     if (!isSpeechRecognitionSupported()) return;
+    setVoiceNavActive(true);
+    startListening(
+      lang,
+      (text, isFinal) => {
+        if (isFinal) {
+          const cmd = parseVoiceCommand(text);
+          if (!cmd) return;
+          if (cmd.feedback) speak(cmd.feedback, lang);
+          window.dispatchEvent(new Event('chat-activity'));
 
+          if (cmd.type === 'nav') {
+            if (cmd.screen === '__logout__') doLogout();
+            else nav(cmd.screen);
+          } else if (cmd.type === 'action' || cmd.type === 'payment_method') {
+            if (cmd.action === 'logout') {
+               doLogout();
+            } else if (cmd.action === 'start') {
+               nav('dashboard');
+            } else {
+               window.dispatchEvent(new CustomEvent('voice-action', { detail: cmd }));
+            }
+          } else if (cmd.type === 'login_action') {
+            window.dispatchEvent(new CustomEvent('voice-action', { detail: cmd }));
+          }
+        }
+      },
+      () => { 
+        setVoiceNavActive(false); 
+        setVoiceLevel(0);
+      },
+      (err) => { 
+        if (err === 'offline_partial') return;
+        setVoiceNavActive(false); 
+        setVoiceLevel(0);
+      },
+      (lvl) => setVoiceLevel(lvl)
+    );
+  }, [lang, nav, doLogout]);
+
+  const toggleVoiceNav = useCallback(() => {
     if (voiceNavActive) {
       stopListening();
       setVoiceNavActive(false);
     } else {
-      setVoiceNavActive(true);
-      startListening(
-        lang,
-        (text, isFinal) => {
-          if (isFinal) {
-            const cmd = parseVoiceCommand(text);
-            if (!cmd) return;
-            // Verbal feedback (speak handles echo prevention)
-            if (cmd.feedback) speak(cmd.feedback, lang);
-            // 15 min reset on any valid voice command
-            window.dispatchEvent(new Event('chat-activity'));
-
-            if (cmd.type === 'nav') {
-              if (cmd.screen === '__logout__') doLogout();
-              else nav(cmd.screen);
-            } else if (cmd.type === 'action' || cmd.type === 'payment_method') {
-              if (cmd.action === 'logout') {
-                 doLogout();
-              } else if (cmd.action === 'start') {
-                 nav('dashboard');
-              } else {
-                 // Broadcast custom event for screens to pick up (e.g. 'pay', 'upi')
-                 window.dispatchEvent(new CustomEvent('voice-action', { detail: cmd }));
-              }
-            } else if (cmd.type === 'login_action') {
-              // Broadcast login actions for the Login page
-              window.dispatchEvent(new CustomEvent('voice-action', { detail: cmd }));
-            } else if (cmd.type === 'language') {
-              // App root doesn't have setLang in this scope, but welcome screen uses it.
-            }
-          }
-        },
-        () => { 
-          setVoiceNavActive(false); 
-          setVoiceLevel(0);
-        },
-        (err) => { 
-          // Don't stop on partial offline errors
-          if (err === 'offline_partial') return;
-          setVoiceNavActive(false); 
-          setVoiceLevel(0);
-        },
-        (lvl) => setVoiceLevel(lvl)
-      );
+      startVoice();
     }
-  }, [voiceNavActive, lang, nav, doLogout]);
+  }, [voiceNavActive, startVoice]);
+
+  // Seamless Handoff: Auto-takeover microphone when transitioning from Login to Dashboard
+  useEffect(() => {
+    if (user && isListening() && !voiceNavActive) {
+      startVoice();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return { voiceNavActive, toggleVoiceNav, voiceLevel };
 };

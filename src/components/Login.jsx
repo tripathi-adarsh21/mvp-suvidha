@@ -44,7 +44,9 @@ const Login = ({ onLogin, onBack, t, lang }) => {
 
   // Cleanup voice on unmount
   useEffect(() => {
-    return () => stopListening();
+    return () => {
+      // Intentionally not stopping here to allow handoff to Dashboard
+    };
   }, []);
 
   // Resend countdown timer
@@ -102,9 +104,8 @@ const Login = ({ onLogin, onBack, t, lang }) => {
     setErr(""); setLoading(true);
     setOtpAttempts(prev => prev + 1);
 
-    // Stop voice before login transition
-    stopListening();
-    setVoiceActive(false);
+    // Keep voice running for conversational feedback and handoff to Dashboard
+    // setVoiceActive(false);
 
     if (isFirebaseReady()) {
       const result = await verifyFirebaseOTP(currentOtp);

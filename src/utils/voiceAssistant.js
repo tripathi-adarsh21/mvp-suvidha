@@ -254,58 +254,8 @@ export const isListening = () => _persistentMode;
  * Temporarily pauses recognition to prevent echo
  */
 export const speak = (text, lang = 'en') => {
-  if (!window.speechSynthesis) return;
-
-  stopSpeaking();
-
-  // Clean emoji/special chars for cleaner speech
-  const cleanText = text.replace(/[\u{1F600}-\u{1F6FF}]/gu, '').replace(/[•·←→]/g, ',').replace(/\d️⃣/g, '').trim();
-  if (!cleanText) return;
-
-  // Track the spoken text to prevent echo
-  _lastSpokenText = cleanText;
-  _isSpeaking = true;
-
-  // Temporarily pause recognition while speaking
-  const wasListening = _persistentMode;
-  if (wasListening && recognition) {
-    try { recognition.stop(); } catch(e) { /* ignore */ }
-    recognition = null;
-  }
-
-  const utterance = new SpeechSynthesisUtterance(cleanText);
-  utterance.lang = LANG_MAP[lang] || 'en-IN';
-  utterance.rate = 0.95;
-  utterance.pitch = 1.05;
-  utterance.volume = 1;
-
-  const voices = window.speechSynthesis.getVoices();
-  const targetLang = LANG_MAP[lang] || 'en-IN';
-  const match = voices.find(v => v.lang === targetLang) ||
-                voices.find(v => v.lang.startsWith(lang));
-  if (match) utterance.voice = match;
-
-  utterance.onend = () => {
-    _isSpeaking = false;
-    // Clear last spoken text after a delay so recognition doesn't pick up remnants
-    setTimeout(() => {
-      _lastSpokenText = '';
-      // Resume recognition if it was active
-      if (wasListening && _persistentMode) {
-        _startRecognitionSession();
-      }
-    }, 500);
-  };
-
-  utterance.onerror = () => {
-    _isSpeaking = false;
-    _lastSpokenText = '';
-    if (wasListening && _persistentMode) {
-      setTimeout(() => _startRecognitionSession(), 300);
-    }
-  };
-
-  window.speechSynthesis.speak(utterance);
+  // Completely disabled TTS by user request (listens and executes only)
+  return;
 };
 
 /**
